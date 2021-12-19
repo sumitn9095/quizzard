@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { SharedModule } from './shared/shared.module';
+
 // for Firebase
 import * as firebase from 'firebase/app';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -31,6 +33,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    SharedModule.forChild(),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
   ],
