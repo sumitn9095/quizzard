@@ -4,7 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './auth.component';
 
 const routes: Routes = [
-  { path: '', component: AuthComponent },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./signin/signin.module').then((m) => m.SigninModule),
+  },
   {
     path: 'signin',
     loadChildren: () =>
@@ -14,6 +18,11 @@ const routes: Routes = [
     path: 'signup',
     loadChildren: () =>
       import('./signup/signup.module').then((m) => m.SignupModule),
+  },
+  {
+    path: 'signout',
+    loadChildren: () =>
+      import('./signout/signout.module').then((m) => m.SignoutModule),
   },
 ];
 

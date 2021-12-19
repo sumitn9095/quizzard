@@ -132,6 +132,7 @@ export class QuizroundComponent implements OnInit {
     this.options.filter((f) => {
       if (f.correct == true) {
         let ddf = f;
+        f.answer = `right`;
         console.log(ddf, parseInt(chosen_option_index));
         if (ddf.id === parseInt(chosen_option_index)) {
           console.log('A MATCH');
@@ -143,9 +144,9 @@ export class QuizroundComponent implements OnInit {
   }
 
   option_chosen(val: any) {
-    let option_chosen_id = val.target
-      ? val.target.parentElement.parentElement.id
-      : null;
+    var option_chosen = val.target ? val.target.parentElement : null;
+
+    var option_chosen_id = val.target ? val.target.parentElement.id : null;
 
     if (option_chosen_id) {
       this.process_result(option_chosen_id);
@@ -155,20 +156,20 @@ export class QuizroundComponent implements OnInit {
         'all options',
         this.options,
         'this option',
-        val.target.parentElement.parentElement.id
+        option_chosen_id
       );
       // this.r2.setStyle(
-      //   val.target.parentElement.parentElement,
+      //   option_chosen,
       //   '',
       //   'selected'
       // );
       // this.r2.setAttribute(
-      //   val.target.parentElement.parentElement,
+      //   option_chosen,
       //   'class',
       //   'selected'
       // );
 
-      this.r2.addClass(val.target.parentElement.parentElement, 'selected');
+      this.r2.addClass(option_chosen, 'selected');
       this._quizService.add_score(
         this._quizService.round_num,
         this.question,

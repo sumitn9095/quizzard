@@ -1,12 +1,13 @@
 <application-header></application-header>
-<div class="">
+<div class="quiz-round">
   <div class="question">
     {{ question }}
   </div>
   <div class="options" *ngIf="options">
 
     <app-option #opts *ngFor="let qst of options" [id]="qst.id" class="quiz-option"
-      [ngClass]="qst.user ? qst.user : 'wrong' " (click)="option_chosen($event)">
+      [ngClass]="qst.user ? qst.user : 'wrong' " [ngClass]="qst.answer ? qst.answer : '' "
+      (click)="option_chosen($event)">
 
       {{ qst.name }}
     </app-option>

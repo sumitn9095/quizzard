@@ -24,22 +24,24 @@ export class AuthService {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
         let fff = localStorage.getItem('user');
+        console.log(`${user} --- IS signed-in`);
         return fff != null ? JSON.parse(fff) : '';
       } else {
         localStorage.setItem('user', 'NONE');
         let fff = localStorage.getItem('user');
-        return fff != null ? JSON.parse(fff) : '';
+        console.log(`User IS NOT signed-in`);
+        return fff || fff != null ? JSON.parse(fff) : '';
       }
     });
   }
 
   // Sign in with email/password
-  SignIn(email: any, password: any) {
+  signIn(email: any, password: any) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['../application']);
         });
         this.SetUserData(result.user);
       })
@@ -62,7 +64,7 @@ export class AuthService {
   }
 
   // Sign up with email/password
-  SignUp(email: any, password: any) {
+  signUp(email: any, password: any) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
@@ -77,6 +79,16 @@ export class AuthService {
       .catch((error) => {
         window.alert(error.message);
       });
+  }
+
+  // Sign out
+  signOut() {
+    return this.afAuth.signOut().then(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('user_score');
+      localStorage.removeItem('user_game_progress');
+      this.router.navigate(['../../../auth']);
+    });
   }
 
   // Send email verfificaiton when new user sign up
