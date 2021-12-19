@@ -7,6 +7,7 @@ import { HeaderComponent } from './components/header/header.component';
 @NgModule({
   declarations: [HeaderComponent],
   imports: [CommonModule, SharedRoutingModule],
+  exports: [HeaderComponent],
 })
 export class SharedModule {
   static forChild(): ModuleWithProviders<any> {

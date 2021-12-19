@@ -13,9 +13,9 @@ export class ApplicationService {
     localStorage.setItem(key, JSON.stringify(val));
   }
 
-  read_key(key: string) {
+  read_key(key: any) {
     let score = localStorage.getItem(key);
-    return score !== null ? JSON.parse(score) : '';
+    return score !== null ? JSON.parse(score) : 0;
   }
 
   // s(name, user_data) {

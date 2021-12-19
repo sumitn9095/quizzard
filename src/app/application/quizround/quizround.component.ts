@@ -85,7 +85,6 @@ export class QuizroundComponent implements OnInit {
   ];
   public question: string = '';
   public options: any[] = [];
-  public round_num: number = 1;
   public qset: Object = {};
 
   // User gaining score for every right answer given
@@ -109,10 +108,10 @@ export class QuizroundComponent implements OnInit {
   ngAfterViewInit() {
     this.options = [];
     this._ar.params.subscribe((f: any) => {
-      this.round_num = f.num;
-      console.log('this.round_num', this.round_num);
-      this.question = this.quizdata[this.round_num - 1].question;
-      this.options = this.quizdata[this.round_num - 1].options;
+      this._quizService.round_num = f.num;
+      console.log('this.round_num', this._quizService.round_num);
+      this.question = this.quizdata[this._quizService.round_num - 1].question;
+      this.options = this.quizdata[this._quizService.round_num - 1].options;
     });
     this.option_chosen(document);
     console.log('qset', this.qset);
@@ -122,10 +121,12 @@ export class QuizroundComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('quizdata', this.quizdata);
+    this._quizService.update_round();
   }
 
   process_result(chosen_option_index: string) {
-    console.log('chosen_option_index', chosen_option_index);
+    this.scored_round_points = 0;
+    //console.log('chosen_option_index', chosen_option_index);
     let oopi = parseInt(chosen_option_index);
     this.options[oopi - 1].selected = true;
     this.options.filter((f) => {
@@ -168,14 +169,20 @@ export class QuizroundComponent implements OnInit {
       // );
 
       this.r2.addClass(val.target.parentElement.parentElement, 'selected');
-      this._quizService.add_score(this.round_num, this.question, this.options);
-      this._appService.save_key(`user_score`, this._quizService.score_box);
+      this._quizService.add_score(
+        this._quizService.round_num,
+        this.question,
+        this.options,
+        this.scored_round_points
+      );
 
       setTimeout(() => {
         this.clickedOnce = false;
-
         this.options = [];
-        this.router.navigate([`./application/quizround/${++this.round_num}`]);
+        this.router.navigate([
+          `./application/quizround/${++this._quizService.round_num}`,
+        ]);
+        this._quizService.update_round();
       }, 4000);
       this.clickedOnce = true;
 
