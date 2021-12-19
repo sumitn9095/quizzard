@@ -1,0 +1,11 @@
+  <ul>
+    <li *ngFor="let item of items | async">
+      <span>{{ item.email }}</span><span>{{ item.points }}</span>
+      <!-- <input type="text" #updatetext [value]="item.text" />
+      <button (click)="updateItem(item.key, 765)">Update</button>
+      <button (click)="deleteItem(item.key)">Delete</button> -->
+    </li>
+  </ul>
+  <!-- <input type="text" #newitem />
+  <button (click)="addUserScore(23)">Add</button>
+  <button (click)="deleteEverything()">Delete All</button> -->

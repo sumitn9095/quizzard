@@ -1,1 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --a1: #2bcc46;
+  --a2: #ad8976;
+  --a3: #cf4848;
+}
+
+
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+
+
+.quiz-option {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  padding: 8px;
+
+  .quiz-option-in {
+    border-radius: 100px;
+    background-color: var(--a2);
+    color: black;
+  }
+
+  &.selected {
+
+
+    &.wrong {
+      .quiz-option-in {
+        background-color: var(--a3);
+      }
+    }
+
+    &.right {
+      .quiz-option-in {
+        background-color: var(--a1);
+      }
+    }
+  }
+}
