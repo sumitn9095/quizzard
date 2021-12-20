@@ -24,6 +24,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./signout/signout.module').then((m) => m.SignoutModule),
   },
+  {
+    path: 'verify',
+    loadChildren: () =>
+      import('./verify-email-address/verify-email-address.module').then(
+        (m) => m.VerifyEmailAddressModule
+      ),
+  },
 ];
 
 @NgModule({

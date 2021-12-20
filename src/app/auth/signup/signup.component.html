@@ -1,21 +1,21 @@
-<div class="displayTable">
-  <div class="displayTableCell">
+<div class="auth_form">
+  <div class="auth_box">
+    <h3>Sign Up</h3>
+    <div class="formGroup">
+      <input type="text" class="formControl" placeholder="Email Address" #userEmail required>
+    </div>
 
-    <div class="authBlock">
-      <h3>Sign Up</h3>
+    <div class="formGroup">
+      <input type="password" class="formControl" placeholder="Password" #userPassword required>
+    </div>
 
-      <div class="formGroup">
-        <input type="email" class="formControl" placeholder="Email Address" #userEmail required>
-      </div>
+    <div class="formGroup">
+      <input type="button" class="btn btn_primary" value="Sign Up"
+        (click)="authService.signUp(userEmail.value, userPassword.value)">
+    </div>
 
-      <div class="formGroup">
-        <input type="password" class="formControl" placeholder="Password" #userPwd required>
-      </div>
-
-      <div class="formGroup">
-        <input type="button" class="btn btnPrimary" value="Sign Up"
-          (click)="authService.signUp(userEmail.value, userPwd.value)">
-      </div>
+    <div class="redirectToLogin">
+      <p>Already have account?<a class="redirect btn btn-sm btn_secondary" routerLink="/auth/signin"> Sign In</a></p>
     </div>
   </div>
 </div>

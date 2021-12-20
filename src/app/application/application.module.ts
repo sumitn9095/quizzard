@@ -4,7 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { ApplicationComponent } from './application.component';
 
 const routes: Routes = [
-  { path: '', component: ApplicationComponent },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./quizround/quizround.module').then((m) => m.QuizroundModule),
+  },
   {
     path: 'quizround',
     loadChildren: () =>
@@ -16,7 +20,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./quizround/quizround.module').then((m) => m.QuizroundModule),
   },
-  { path: 'userscore', loadChildren: () => import('./userscore/userscore.module').then(m => m.UserscoreModule) },
+  {
+    path: 'userscore',
+    loadChildren: () =>
+      import('./userscore/userscore.module').then((m) => m.UserscoreModule),
+  },
 ];
 
 @NgModule({

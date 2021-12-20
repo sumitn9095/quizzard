@@ -1,14 +1,72 @@
 :root {
+  --l: 50%;
   --a1: #2bcc46;
-  --a2: #ad8976;
+  --a2: #82c1df;
   --a3: #cf4848;
+
+  --a1-d: #126821;
+  --a2-d: #276683;
+  --a3-d: #813636;
+
+  --a1-l: #adffba;
+  --a2-l: #aae4ff;
+  --a3-l: #ffc7c7;
+
 }
 
+
+
+
+.btn_primary {
+  padding: 6px 8px !important;
+  background-color: var(--a1-d) !important;
+  color: white !important;
+  border: 1px solid var(--a1-l) !important;
+}
+
+.btn_secondary {
+  padding: 6px 8px !important;
+  background-color: var(--a3-d) !important;
+  color: white !important;
+  border: 1px solid var(--a3-l) !important;
+}
 
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+
+.auth_form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: calc(100vh - 60px);
+  text-align: center;
+
+  .auth_box {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 80px;
+    background: var(--a3-d);
+    color: white;
+
+    .btn_primary {
+      margin: 10px auto;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: var(--a2-d);
+}
 
 .quiz-round {
   padding: 40px;
@@ -26,6 +84,7 @@
 
 
     .quiz-option {
+      cursor: pointer;
       display: flex;
       flex-wrap: wrap;
       width: 50%;
@@ -56,5 +115,22 @@
       }
 
     }
+  }
+}
+
+
+.game_details_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .game_details {
+    display: flex;
+    align-items: center;
+
+  }
+
+  .detail_block_value {
+    margin-left: 20px;
   }
 }

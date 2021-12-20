@@ -1,1 +1,33 @@
+.quiz-round-info {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  .quiz-round-num {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 160px;
+    height: 160px;
+    transform: translateY(-80px);
+
+    .quiz-round-num-in {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 200px;
+      background-color: var(--a2);
+      color: black;
+    }
+  }
+}

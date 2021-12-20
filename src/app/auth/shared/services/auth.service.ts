@@ -25,12 +25,12 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(this.userData));
         let fff = localStorage.getItem('user');
         console.log(`${user} --- IS signed-in`);
-        return fff != null ? JSON.parse(fff) : '';
-      } else {
-        localStorage.setItem('user', 'NONE');
-        let fff = localStorage.getItem('user');
-        console.log(`User IS NOT signed-in`);
         return fff || fff != null ? JSON.parse(fff) : '';
+      } else {
+        localStorage.removeItem('user');
+        // let fff = localStorage.getItem('user');
+        console.log(`User IS NOT signed-in`);
+        // return fff || fff != null ? JSON.parse(fff) : '';
       }
     });
   }
@@ -41,7 +41,7 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['../application']);
+          this.router.navigate(['../../../application/quizround/1']);
         });
         this.SetUserData(result.user);
       })
@@ -68,12 +68,8 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign 
-        up and returns promise */
-        //this.SendVerificationMail();
-        // this.SetUserData(result.user);
         result.user?.sendEmailVerification().then(() => {
-          this.router.navigate(['verify-email-address']);
+          this.router.navigate(['../../../auth/verify']);
         });
       })
       .catch((error) => {
@@ -90,11 +86,4 @@ export class AuthService {
       this.router.navigate(['../../../auth']);
     });
   }
-
-  // Send email verfificaiton when new user sign up
-  // SendVerificationMail() {
-  //   return this.afAuth.currentUser.sendEmailVerification().then(() => {
-  //     this.router.navigate(['verify-email-address']);
-  //   });
-  // }
 }

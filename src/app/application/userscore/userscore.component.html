@@ -1,11 +1,19 @@
-  <ul>
-    <li *ngFor="let item of items | async">
-      <span>{{ item.email }}</span><span>{{ item.points }}</span>
-      <!-- <input type="text" #updatetext [value]="item.text" />
-      <button (click)="updateItem(item.key, 765)">Update</button>
-      <button (click)="deleteItem(item.key)">Delete</button> -->
-    </li>
-  </ul>
-  <!-- <input type="text" #newitem />
-  <button (click)="addUserScore(23)">Add</button>
-  <button (click)="deleteEverything()">Delete All</button> -->
+  <div class="scores">
+    <div class="user-score score-col">
+      <h3>Your Score</h3>
+      <div class="score-col-in user-score-in">
+        <div class="score-row user-score-row">
+          <span>{{ user_score_details.email }}</span><span>{{ user_score_details.user_score }}</span>
+        </div>
+        <a class="btn" (click)="retry()">Retry</a>
+      </div>
+    </div>
+    <div class="top-scores score-col">
+      <h3>Top Scores</h3>
+      <div class="score-col-in top-scores-in">
+        <div class="score-row top-scores-row" *ngFor="let item of items">
+          <span>{{ item.email }}</span><span>{{ item.points }}</span>
+        </div>
+      </div>
+    </div>
+  </div>

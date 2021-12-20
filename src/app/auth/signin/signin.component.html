@@ -1,28 +1,21 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-
-    <div class="authBlock">
-      <h3>Sign In</h3>
-      <div class="formGroup">
-        <input type="text" class="formControl" placeholder="Username" #userName required>
-      </div>
-
-      <div class="formGroup">
-        <input type="password" class="formControl" placeholder="Password" #userPassword required>
-      </div>
-
-      <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input type="button" class="btn btnPrimary" value="Log in"
-          (click)="authService.signIn(userName.value, userPassword.value)">
-      </div>
-
-
+<div class="auth_form">
+  <div class="auth_box">
+    <h3>Sign In</h3>
+    <div class="formGroup">
+      <input type="text" class="formControl" placeholder="Email Address" #userEmail required>
     </div>
 
-    <!-- <div class="redirectToLogin">
-      <span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
-    </div> -->
+    <div class="formGroup">
+      <input type="password" class="formControl" placeholder="Password" #userPassword required>
+    </div>
 
+    <div class="formGroup">
+      <input type="button" class="btn btn_primary" value="Sign In"
+        (click)="authService.signIn(userEmail.value, userPassword.value)">
+    </div>
+
+    <div class="redirectToLogin">
+      <p>Don't have an account?<a class="redirect btn btn-sm btn_secondary" routerLink="/auth/signup"> Sign Up</a></p>
+    </div>
   </div>
 </div>
