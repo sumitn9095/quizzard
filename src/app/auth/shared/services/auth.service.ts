@@ -21,16 +21,22 @@ export class AuthService {
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        let fff = localStorage.getItem('user');
-        console.log(`${user} --- IS signed-in`);
-        return fff || fff != null ? JSON.parse(fff) : '';
+        if (user.emailVerified == true) {
+          this.userData = user;
+          localStorage.setItem('user', JSON.stringify(this.userData));
+          let fff = localStorage.getItem('user');
+          console.log(`${user} --- IS signed-in`);
+          this.router.navigate(['../application/quizround/1']);
+          return true;
+        } else {
+          localStorage.removeItem('user');
+          this.router.navigate(['../auth/']);
+          return false;
+        }
       } else {
         localStorage.removeItem('user');
-        // let fff = localStorage.getItem('user');
-        console.log(`User IS NOT signed-in`);
-        // return fff || fff != null ? JSON.parse(fff) : '';
+        this.router.navigate(['../auth/']);
+        return false;
       }
     });
   }

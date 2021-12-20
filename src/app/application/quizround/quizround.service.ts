@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ApplicationService } from '../application.service';
 
+import {
+  AngularFireDatabase,
+  AngularFireList,
+} from '@angular/fire/compat/database';
+import { map } from 'rxjs/operators';
+
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class QuizroundService {
+  itemsRef: AngularFireList<any>;
+  items: Observable<any[]>;
+
   public round_num: number = 1;
 
   public game_score: number = 0;
@@ -14,7 +23,16 @@ export class QuizroundService {
 
   public gameDetailsBs = new BehaviorSubject<any>(0);
 
-  constructor(private _appService: ApplicationService) {}
+  constructor(
+    private _appService: ApplicationService,
+    private db: AngularFireDatabase
+  ) {
+    this.itemsRef = db.list('quizdata', (ref) => ref);
+    this.items = this.itemsRef
+      .snapshotChanges()
+      .pipe(map((changes) => changes.map((c) => ({ ...c.payload.val() }))));
+    this.itemsRef = db.list('quizdata', (ref) => ref.orderByChild('question'));
+  }
 
   update_round() {
     let game_details = {

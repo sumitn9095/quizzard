@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-
 import { UserScore } from '../shared/user-score';
 import { ApplicationService } from '../application.service';
-import { getDatabase, ref, query, orderByChild } from 'firebase/database';
 
 import {
   AngularFireDatabase,
   AngularFireList,
-  AngularFireObject,
-  QueryFn,
-  AngularFireDatabaseModule,
 } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -28,9 +23,6 @@ export class UserscoreService {
       ref.orderByChild('points').limitToLast(10)
     );
 
-    // this.itemsRef = db.list('scores', (ref: any) => ref.orderByChild('points'));
-    // db.list('/items', (ref) => ref.orderByChild('size').equalTo('large'));
-    // Use snapshotChanges().map() to store the key
     this.items = this.itemsRef
       .snapshotChanges()
       .pipe(

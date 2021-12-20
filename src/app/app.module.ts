@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 // for Firebase
 import * as firebase from 'firebase/app';
 import { AngularFireModule } from '@angular/fire/compat';
+
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth/';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';

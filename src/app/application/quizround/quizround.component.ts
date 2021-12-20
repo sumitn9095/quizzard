@@ -9,7 +9,7 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-//import * as quizdata from './quiz.json';
+//import * as quiz_data from './quiz.json';
 
 import { fromEvent, Observable, pipe } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
@@ -30,6 +30,8 @@ declare var anime: any;
 export class QuizroundComponent implements OnInit {
   public clickedOnce: boolean = false;
   public buttonSubscription: any = null;
+  public quiz_data: any[] = [];
+
   public quizdata: any[] = [
     {
       question: 'What is A ?',
@@ -168,7 +170,11 @@ export class QuizroundComponent implements OnInit {
   ngAfterViewInit() {
     var quiz_round_info = document.querySelector('.quiz-round-info');
     var quiz_round_num = document.querySelector('.quiz-round-num');
+
+    var quiz_option = document.querySelector('.quiz-option');
+
     this.shuffle(this.quizdata);
+    console.log('this.quizdata', this.quizdata);
     this.options = [];
     this._ar.params.subscribe((f: any) => {
       this._quizService.round_num = f.num;
@@ -177,6 +183,7 @@ export class QuizroundComponent implements OnInit {
       this.options = this.quizdata[this._quizService.round_num - 1].options;
       this.round_progress();
       // Round info animation
+
       var fr = anime.timeline({
         duration: 1200,
       });
@@ -192,20 +199,28 @@ export class QuizroundComponent implements OnInit {
           duration: 1200,
         })
         .add({
-          targets: quiz_round_num,
-          scale: [1, 0],
+          targets: quiz_round_info,
+          opacity: [1, 0],
+          translateY: [0, '-100vh'],
           duration: 1200,
-          delay: 2000,
+          delay: 2200,
         })
         .add(
           {
-            targets: quiz_round_info,
-            opacity: [1, 0],
-            translateY: [0, '-100vh'],
+            targets: quiz_round_num,
+            scale: [1, 0],
             duration: 1200,
           },
-          '-=1000'
+          '-=1500'
         );
+
+      anime({
+        targets: quiz_option,
+        opacity: [0, 1],
+        scale: [0.6, 1],
+        duration: 1200,
+        delay: anime.stagger(1200),
+      });
     });
     this.option_chosen(document);
     console.log('qset', this.qset);
@@ -214,6 +229,11 @@ export class QuizroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._quizService.items.subscribe((e) => {
+      e.map((g) => {
+        this.quizdata.push(g);
+      });
+    });
     console.log('quizdata', this.quizdata);
   }
 

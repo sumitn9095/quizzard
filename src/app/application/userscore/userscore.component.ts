@@ -4,14 +4,7 @@ import { Router } from '@angular/router';
 import { UserScore } from '../shared/user-score';
 import { QuizroundService } from '../quizround/quizround.service';
 
-import {
-  AngularFireDatabase,
-  AngularFireList,
-  AngularFireObject,
-} from '@angular/fire/compat/database';
-import { Observable } from 'rxjs';
-import { map, toArray, mergeMap } from 'rxjs/operators';
-import { pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-userscore',

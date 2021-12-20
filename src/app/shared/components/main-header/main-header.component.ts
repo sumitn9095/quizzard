@@ -7,24 +7,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-header.component.scss'],
 })
 export class MainHeaderComponent implements OnInit {
-  public user_is_logged_in: Boolean = false;
-
+  // public user_is_logged_in: Boolean = false;
+  public user: any;
   constructor(private _router: Router) {}
 
   ngOnInit(): void {
-    localStorage.getItem('user')
-      ? (this.user_is_logged_in = true)
-      : (this.user_is_logged_in = false);
+    let user = localStorage.getItem('user');
+    if (user) {
+      // this.user_is_logged_in = true;
+      this.user = user != null ? JSON.parse(user) : '';
+    } else {
+      // this.user_is_logged_in = false;
+    }
   }
 
   sign_out() {
     this._router.navigate([`../../../auth/signout`]);
-  }
-
-  as() {
-    let user_score = localStorage.getItem('user_score');
-    let user = localStorage.getItem('user');
-    let userthis = JSON.parse(user ? user : '');
-    return { user_score: user_score, email: userthis.email };
   }
 }
