@@ -1,0 +1,50 @@
+.dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+  top: 40px !important;
+}
+
+.navbar {
+  background-image: linear-gradient(to right, var(--a3), var(--a3-l));
+  border-bottom: 4px solid linear-gradient(to right, var(--a1), var(--a1-l));
+
+
+}
+
+.navbar-border {
+  height: 4px;
+  width: 100%;
+  background-image: linear-gradient(to right, var(--a3-l), white);
+}
+
+.user_profile_modal {
+  text-align: center;
+
+  .profile_body {
+    text-align: left;
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .profile_header {
+    margin-bottom: 30px;
+  }
+
+  &.emailVerified-true {
+    .profile_body {
+      background-color: var(--a2-l);
+      border: 2px solid var(--a2);
+      color: var(--a1-d);
+    }
+  }
+
+  &.emailVerified-false {
+    .profile_body {
+      background-color: var(--a3-l);
+      border: 2px solid var(--a3);
+      color: var(--a3-d);
+    }
+  }
+
+
+}

@@ -12,7 +12,7 @@ import {
 //import * as quiz_data from './quiz.json';
 
 import { fromEvent, Observable, pipe } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, map } from 'rxjs/operators';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -224,12 +224,11 @@ export class QuizroundComponent implements OnInit {
     });
     this.option_chosen(document);
     console.log('qset', this.qset);
-
     this.cd.detectChanges();
   }
 
   ngOnInit(): void {
-    this._quizService.items.subscribe((e) => {
+    this._quizService.items.pipe(map((d) => d)).subscribe((e) => {
       e.map((g) => {
         this.quizdata.push(g);
       });

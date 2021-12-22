@@ -5,7 +5,7 @@
   .user-score,
   .top-scores {
     width: 50%;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 70px);
   }
 
   .score-col {
@@ -32,17 +32,50 @@
 
   .user-score {
     //background-color: var(--a3-d);
+    text-align: center;
 
     .user-score-row {
-
+      margin-bottom: 20px !important;
+      padding: 3px;
       border: 2px solid var(--a2-d);
       color: var(--a2-d);
+      background-color: var(--a2-d);
+      color: white;
 
+      .user-row-1 {
+        border-radius: 8px;
+        padding: 15px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 20px;
+
+        .user_img {
+          margin-right: 20px;
+        }
+
+        .user_img,
+        .user_img>img {
+          border-radius: 100px;
+        }
+      }
+
+      .user_score_number {
+        font-size: 25px;
+        padding: 20px;
+        color: white;
+
+      }
     }
   }
 
   .top-scores {
     background-color: var(--a3-d);
+
+    h3 {
+      color: white;
+    }
 
     .top-scores-row {
 

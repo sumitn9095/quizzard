@@ -1,10 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Auth } from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  GithubAuthProvider,
+} from 'firebase/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+
 import { User } from './user';
 import { Router } from '@angular/router';
 
@@ -26,6 +31,7 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(this.userData));
           let fff = localStorage.getItem('user');
           console.log(`${user} --- IS signed-in`);
+
           this.router.navigate(['../application/quizround/1']);
           return true;
         } else {
@@ -45,11 +51,12 @@ export class AuthService {
   signIn(email: any, password: any) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
+
       .then((result) => {
         this.ngZone.run(() => {
           this.router.navigate(['../../../application/quizround/1']);
         });
-        this.SetUserData(result.user);
+        // this.SetUserData(result.user);
       })
       .catch((error) => {
         window.alert(error.message);
@@ -63,10 +70,38 @@ export class AuthService {
     const userData: User = {
       uid: user.uid,
       email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
     };
     return userRef.set(userData, {
       merge: true,
     });
+  }
+
+  // Sign in with Google
+  GoogleAuth() {
+    return this.AuthLogin(new GoogleAuthProvider());
+  }
+
+  FacebookAuth() {
+    return this.AuthLogin(new FacebookAuthProvider());
+  }
+
+  GithubAuth() {
+    return this.AuthLogin(new GithubAuthProvider());
+  }
+
+  // Auth logic to run auth providers
+  AuthLogin(provider: any) {
+    return this.afAuth
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log('You have been successfully logged in!');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   // Sign up with email/password

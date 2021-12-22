@@ -34,17 +34,10 @@ export class UserscoreService {
     //console.log('this.items', this.items);
   }
 
-  fetch_user_score_details() {
-    let user_score = localStorage.getItem('user_score');
-    let user = localStorage.getItem('user');
-    let userthis = JSON.parse(user ? user : '');
-    return { user_score: user_score, email: userthis.email };
-  }
-
   add_user_score() {
-    let ssd = this.fetch_user_score_details();
+    let ssd = this._appService.fetch_user_score_details();
     this.addUserScore(
-      ssd.email,
+      ssd.user.email,
       JSON.parse(ssd.user_score ? ssd.user_score : '')
     );
   }

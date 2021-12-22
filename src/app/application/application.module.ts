@@ -5,11 +5,6 @@ import { ApplicationComponent } from './application.component';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () =>
-      import('./quizround/quizround.module').then((m) => m.QuizroundModule),
-  },
-  {
     path: 'quizround',
     loadChildren: () =>
       import('./quizround/quizround.module').then((m) => m.QuizroundModule),
@@ -24,6 +19,13 @@ const routes: Routes = [
     path: 'userscore',
     loadChildren: () =>
       import('./userscore/userscore.module').then((m) => m.UserscoreModule),
+  },
+  {
+    path: 'userProfile',
+    loadChildren: () =>
+      import('./user-profile/user-profile.module').then(
+        (m) => m.UserProfileModule
+      ),
   },
 ];
 

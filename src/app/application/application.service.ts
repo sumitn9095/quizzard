@@ -18,6 +18,13 @@ export class ApplicationService {
     return score !== null ? JSON.parse(score) : 0;
   }
 
+  fetch_user_score_details() {
+    let user_score = localStorage.getItem('user_score');
+    let user = localStorage.getItem('user');
+    let userthis = JSON.parse(user ? user : '');
+    return { user_score: user_score, user: userthis };
+  }
+
   // s(name, user_data) {
   //   localStorage.setItem(`${name}`, JSON.stringify(user_data));
   // }

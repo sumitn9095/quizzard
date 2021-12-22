@@ -1,9 +1,49 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar">
   <div class="container-fluid game_details_wrap">
     <a class="navbar-brand logo">Quizzard</a>
     <div class="game_details">
-      <div *ngIf="user" class="emailid btn_secondary">{{ user.email }}</div>
-      <a *ngIf="user" class="btn" (click)="sign_out()">Log Out</a>
+      <div *ngIf="user_details.user" class="btn-group mr-3">
+        <button type="button" class="btn emailid btn_secondary">{{ user_details.user.email }}</button>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn" ngbDropdownToggle></button>
+          <div class="dropdown-menu " ngbDropdownMenu>
+            <button ngbDropdownItem (click)="user_profile(user_profile_modal)">My Profile</button>
+            <button ngbDropdownItem (click)="sign_out()">Log Out</button>
+          </div>
+        </div>
+      </div>
+      <!-- <div *ngIf="user" class="emailid btn_secondary">{{ user.email }}</div>
+      <a *ngIf="user" class="btn" (click)="sign_out()">Log Out</a>-->
     </div>
   </div>
 </nav>
+<div class="navbar-border"></div>
+
+<!-- Login status Modal -->
+<ng-template class="" #user_profile_modal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="user_details.user"
+    class="modal-body  user_profile_modal emailVerified-{{user_details.user.emailVerified}}">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="profile_header">
+          <img class="align-self-start mr-5 img-thumbnail rounded-circle"
+            src="{{(user_details.user.photoURL) ? user_details.user.photoURL : '/assets/dummy-user.png'}}"
+            alt="{{user_details.user.displayName}}">
+          <h2>{{(user_details.user.displayName) ? user_details.user.displayName : 'User'}}
+          </h2>
+        </div>
+        <div class="profile_body">
+          <p>User ID: <strong>{{user_details.user.uid}}</strong></p>
+          <p>Email: <strong>{{user_details.user.email}}</strong></p>
+          <p>Email Verified: <strong>{{user_details.user.emailVerified}}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

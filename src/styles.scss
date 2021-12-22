@@ -44,18 +44,67 @@ p {
   border: 1px solid var(--a3-l) !important;
 }
 
+.btn-group {
+  .group.dropdown {
+    background-color: var(--a3-l);
+  }
+}
+
+.navbar-brand {
+  padding: 0 20px;
+  border-radius: 100px;
+  background-color: white;
+}
+
+.modal {
+  .modal-content {
+    background-color: var(--a3-d);
+    color: white;
+    border-radius: 15px;
+  }
+
+  .close {
+    background: var(--a3-l);
+    border: 0;
+    border-radius: 100px;
+  }
+}
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+
+.page-wrapper {
+  padding: 0;
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+input[type="range"] {
+  border: 0;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  font-size: 16px;
+}
 
 .auth_form {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  height: calc(100vh - 60px);
+  height: calc(100vh - 70px);
   text-align: center;
+
+  .social_sign_in {
+    button {
+      //padding: 5px;
+      border: 1px solid black;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+  }
 
   .auth_box {
     border: 1px solid #ccc;

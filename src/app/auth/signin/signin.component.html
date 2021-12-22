@@ -14,6 +14,14 @@
         (click)="authService.signIn(userEmail.value, userPassword.value)">
     </div>
 
+
+    <div class="social_sign_in">
+      <button title="Signin with Google" type="button" (click)="authService.GoogleAuth()"><i class="fa fa-google"
+          aria-hidden="true"></i></button>
+    </div>
+    <!-- <button type="button" (click)="authService.FacebookAuth()">Facebook</button>
+    <button type="button" (click)="authService.GithubAuth()">Github</button> -->
+
     <div class="redirectToLogin">
       <p>Don't have an account?<a class="redirect btn btn-sm btn_secondary" routerLink="/auth/signup"> Sign Up</a></p>
     </div>

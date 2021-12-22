@@ -33,7 +33,7 @@ export class AuthGuard
         localStorage.setItem('user', JSON.stringify(this.userData));
         let fff = localStorage.getItem('user');
         console.log(`${user} --- IS signed-in`);
-        this._router.navigate(['../application/quizround/1']);
+        //this._router.navigate(['../application']);
         return true;
       } else {
         localStorage.setItem('user', 'NONE');
@@ -61,7 +61,7 @@ export class AuthGuard
           localStorage.setItem('user', JSON.stringify(this.userData));
           let fff = localStorage.getItem('user');
           console.log(`${user} --- IS signed-in`);
-          this._router.navigate(['../application/quizround/1']);
+          this._router.navigate(['../application']);
           return true;
         } else {
           localStorage.removeItem('user');
