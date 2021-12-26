@@ -12,13 +12,14 @@ import {
 //import * as quiz_data from './quiz.json';
 
 import { fromEvent, Observable, pipe } from 'rxjs';
-import { takeWhile, map } from 'rxjs/operators';
+import { takeWhile, map, filter } from 'rxjs/operators';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApplicationService } from '../application.service';
 import { QuizroundService } from './quizround.service';
 import { UserscoreService } from '../userscore/userscore.service';
+import { kill } from 'process';
 
 declare var anime: any;
 
@@ -27,124 +28,124 @@ declare var anime: any;
   templateUrl: './quizround.component.html',
   styleUrls: ['./quizround.component.scss'],
 })
-export class QuizroundComponent implements OnInit {
+export class QuizroundComponent implements AfterViewInit {
   public clickedOnce: boolean = false;
   public buttonSubscription: any = null;
   public quiz_data: any[] = [];
-
-  public quizdata: any[] = [
-    {
-      question: 'What is A ?',
-      options: [
-        {
-          id: 1,
-          name: 'A letter',
-          correct: true,
-        },
-        {
-          id: 2,
-          name: 'D letter',
-        },
-        {
-          id: 3,
-          name: 'E letter',
-        },
-        {
-          id: 4,
-          name: 'G letter',
-        },
-      ],
-    },
-    {
-      question: 'What is R ?',
-      options: [
-        {
-          id: 1,
-          name: 'S letter',
-        },
-        {
-          id: 2,
-          name: 'R letter',
-          correct: true,
-        },
-        {
-          id: 3,
-          name: 'N letter',
-        },
-        {
-          id: 4,
-          name: 'K letter',
-        },
-      ],
-    },
-    {
-      question: 'What is S ?',
-      options: [
-        {
-          id: 1,
-          name: 'S letter',
-        },
-        {
-          id: 2,
-          name: 'R letter',
-        },
-        {
-          id: 3,
-          name: 'S letter',
-          correct: true,
-        },
-        {
-          id: 4,
-          name: 'K letter',
-        },
-      ],
-    },
-    {
-      question: 'What is Z ?',
-      options: [
-        {
-          id: 1,
-          name: 'S letter',
-        },
-        {
-          id: 2,
-          name: 'R letter',
-        },
-        {
-          id: 3,
-          name: 'S letter',
-        },
-        {
-          id: 4,
-          name: 'Z letter',
-          correct: true,
-        },
-      ],
-    },
-    {
-      question: 'What is T ?',
-      options: [
-        {
-          id: 1,
-          name: 'T letter',
-          correct: true,
-        },
-        {
-          id: 2,
-          name: 'R letter',
-        },
-        {
-          id: 3,
-          name: 'S letter',
-        },
-        {
-          id: 4,
-          name: 'Z letter',
-        },
-      ],
-    },
-  ];
-  public question: string = '';
+  public user_score_details: any = {};
+  // public quizdata: any[] = [
+  //   {
+  //     question: 'What is A ?',
+  //     options: [
+  //       {
+  //         id: 1,
+  //         name: 'A letter',
+  //         correct: true,
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'D letter',
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'E letter',
+  //       },
+  //       {
+  //         id: 4,
+  //         name: 'G letter',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     question: 'What is R ?',
+  //     options: [
+  //       {
+  //         id: 1,
+  //         name: 'S letter',
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'R letter',
+  //         correct: true,
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'N letter',
+  //       },
+  //       {
+  //         id: 4,
+  //         name: 'K letter',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     question: 'What is S ?',
+  //     options: [
+  //       {
+  //         id: 1,
+  //         name: 'S letter',
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'R letter',
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'S letter',
+  //         correct: true,
+  //       },
+  //       {
+  //         id: 4,
+  //         name: 'K letter',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     question: 'What is Z ?',
+  //     options: [
+  //       {
+  //         id: 1,
+  //         name: 'S letter',
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'R letter',
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'S letter',
+  //       },
+  //       {
+  //         id: 4,
+  //         name: 'Z letter',
+  //         correct: true,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     question: 'What is T ?',
+  //     options: [
+  //       {
+  //         id: 1,
+  //         name: 'T letter',
+  //         correct: true,
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'R letter',
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'S letter',
+  //       },
+  //       {
+  //         id: 4,
+  //         name: 'Z letter',
+  //       },
+  //     ],
+  //   },
+  // ];
+  public question: any;
   public options: any[] = [];
   public qset: Object = {};
 
@@ -165,7 +166,17 @@ export class QuizroundComponent implements OnInit {
     private _appService: ApplicationService,
     private _quizService: QuizroundService,
     private _userScoreService: UserscoreService
-  ) {}
+  ) {
+    this._quizService.items.pipe(map((d) => d)).subscribe((e: any[]) => {
+      e.map((g: any, index) => {
+        this.quiz_data.push({ options: [], question: '' });
+        for (let wq in g.options) {
+          this.quiz_data[index].options.push(g.options[wq]);
+        }
+        this.quiz_data[index].question = g.question;
+      });
+    });
+  }
 
   ngAfterViewInit() {
     var quiz_round_info = document.querySelector('.quiz-round-info');
@@ -173,14 +184,35 @@ export class QuizroundComponent implements OnInit {
 
     var quiz_option = document.querySelector('.quiz-option');
 
-    this.shuffle(this.quizdata);
-    console.log('this.quizdata', this.quizdata);
+    //this.shuffle(this.quiz_data);
+    //console.log('this.quizdata', this.quizdata[1], this.quiz_data[1]);
     this.options = [];
+    this.question = '';
     this._ar.params.subscribe((f: any) => {
-      this._quizService.round_num = f.num;
-      console.log('this.round_num', this._quizService.round_num);
-      this.question = this.quizdata[this._quizService.round_num - 1].question;
-      this.options = this.quizdata[this._quizService.round_num - 1].options;
+      ///let qqw = f.num - 1;
+      // this._quizService.round_num = qqw;
+      // console.log(
+      //   'this.round_num',
+      //   this._quizService.round_num,
+      //   this.quiz_data
+      // );
+
+      this.fetch_qset(this._quizService.round_num - 1);
+
+      // this.question = 'eeeeeeeeee ---------- 33333333333333';
+
+      // for (let az in this.quiz_data) {
+      //   //var az = this.quiz_data[this._quizService.round_num];
+      //   console.log('az', az);
+      //   // for (let wq in az) {
+      //   //   this.options = az[wq];
+      //   //   console.log('wq', wq);
+      //   // }
+      // }
+
+      // console.log('this.quiz_data - this.options', this.options);
+
+      //this.options = this.quiz_data[this._quizService.round_num - 1].options;
       this.round_progress();
       // Round info animation
 
@@ -228,12 +260,21 @@ export class QuizroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._quizService.items.pipe(map((d) => d)).subscribe((e) => {
-      e.map((g) => {
-        this.quizdata.push(g);
-      });
-    });
-    console.log('quizdata', this.quizdata);
+    //console.log('quiz_data', this.quiz_data[1], this.quizdata);
+    // setTimeout(() => {
+    //   console.log('---------', this.quiz_data[1]);
+    //   this.quiz_data.forEach((j) => {
+    //     console.log('jj', j);
+    //   });
+    // }, 9000);
+  }
+
+  fetch_qset(index: number) {
+    setTimeout(() => {
+      //console.log('---------', this.quiz_data[index]);
+      this.options = this.quiz_data[index].options;
+      this.question = this.quiz_data[index].question;
+    }, 5000);
   }
 
   shuffle(array: any[]) {
@@ -317,8 +358,36 @@ export class QuizroundComponent implements OnInit {
       setTimeout(() => {
         this.clickedOnce = false;
         this.options = [];
+        this.question = '';
         if (this._quizService.round_num >= 5) {
-          this._userScoreService.add_user_score();
+          this.user_score_details = this._appService.fetch_user_score_details();
+          console.log(
+            'this.user_score_details.user.email',
+            this.user_score_details.user.email
+          );
+          this._userScoreService
+            .fs_get_score()
+            .pipe(
+              map((i: any) => {
+                return i.filter(
+                  (k: any) => k.email == this.user_score_details.user.email
+                );
+              })
+            )
+            .subscribe((r: any) => {
+              // get the Users old score
+              // Check if the (OLD score is less than the users current score) - then add the new user's high score
+              r.map((qa: any) => {
+                console.log(
+                  'user - details',
+                  qa.user_score,
+                  this.user_score_details.user.user_score
+                );
+                if (qa.user_score < this.user_score_details.user_score) {
+                  this._userScoreService.add_user_score();
+                }
+              });
+            });
           this.router.navigate([`./application/userscore`]);
         } else {
           this.router.navigate([
@@ -326,7 +395,9 @@ export class QuizroundComponent implements OnInit {
           ]);
           this.round_progress();
         }
+        console.log('this._quizService.round_num', this._quizService.round_num);
       }, 4000);
+
       this.clickedOnce = true;
 
       // this.buttonSubscription.unsubscribe();

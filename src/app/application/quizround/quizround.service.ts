@@ -31,7 +31,7 @@ export class QuizroundService {
     this.items = this.itemsRef
       .snapshotChanges()
       .pipe(map((changes) => changes.map((c) => ({ ...c.payload.val() }))));
-    this.itemsRef = db.list('quizdata', (ref) => ref.orderByChild('question'));
+    //this.itemsRef = db.list('quizdata', (ref) => ref);
   }
 
   update_round() {
