@@ -4,7 +4,7 @@
       <div class="score-col-in user-score-in">
         <div *ngIf="user_score_details" class="score-row user-score-row">
           <div class="user-row-1" *ngIf="user_score_details.user.photoURL || user_score_details.user.displayName">
-            <div class="user_img" *ngIf="user_score_details.user.photoURL"><img
+            <div class="user_img" *ngIf="user_score_details.user.photoURL"><img title="ddd"
                 src="{{user_score_details.user.photoURL}}" /></div>
             <div *ngIf="user_score_details.user.displayName">{{ user_score_details.user.displayName }}</div>
           </div>

@@ -9,18 +9,13 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-//import * as quiz_data from './quiz.json';
-
 import { fromEvent, Observable, pipe } from 'rxjs';
-import { takeWhile, map, filter } from 'rxjs/operators';
-
+import { takeWhile, map, filter, take, skip } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { ApplicationService } from '../application.service';
 import { QuizroundService } from './quizround.service';
 import { UserscoreService } from '../userscore/userscore.service';
-import { kill } from 'process';
-
+import { last, first, switchMap, shareReplay, skipWhile} from 'rxjs/operators';
 declare var anime: any;
 
 @Component({
@@ -28,127 +23,15 @@ declare var anime: any;
   templateUrl: './quizround.component.html',
   styleUrls: ['./quizround.component.scss'],
 })
-export class QuizroundComponent implements AfterViewInit {
+export class QuizroundComponent implements OnInit {
   public clickedOnce: boolean = false;
   public buttonSubscription: any = null;
   public quiz_data: any[] = [];
   public user_score_details: any = {};
-  // public quizdata: any[] = [
-  //   {
-  //     question: 'What is A ?',
-  //     options: [
-  //       {
-  //         id: 1,
-  //         name: 'A letter',
-  //         correct: true,
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'D letter',
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'E letter',
-  //       },
-  //       {
-  //         id: 4,
-  //         name: 'G letter',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     question: 'What is R ?',
-  //     options: [
-  //       {
-  //         id: 1,
-  //         name: 'S letter',
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'R letter',
-  //         correct: true,
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'N letter',
-  //       },
-  //       {
-  //         id: 4,
-  //         name: 'K letter',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     question: 'What is S ?',
-  //     options: [
-  //       {
-  //         id: 1,
-  //         name: 'S letter',
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'R letter',
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'S letter',
-  //         correct: true,
-  //       },
-  //       {
-  //         id: 4,
-  //         name: 'K letter',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     question: 'What is Z ?',
-  //     options: [
-  //       {
-  //         id: 1,
-  //         name: 'S letter',
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'R letter',
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'S letter',
-  //       },
-  //       {
-  //         id: 4,
-  //         name: 'Z letter',
-  //         correct: true,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     question: 'What is T ?',
-  //     options: [
-  //       {
-  //         id: 1,
-  //         name: 'T letter',
-  //         correct: true,
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'R letter',
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'S letter',
-  //       },
-  //       {
-  //         id: 4,
-  //         name: 'Z letter',
-  //       },
-  //     ],
-  //   },
-  // ];
   public question: any;
   public options: any[] = [];
   public qset: Object = {};
-
+  public quizSetData : any = {};
   public round_num: number = 1;
 
   // User gaining score for every right answer given
@@ -160,62 +43,111 @@ export class QuizroundComponent implements AfterViewInit {
 
   constructor(
     private router: Router,
-    private _ar: ActivatedRoute,
+    //private _ar: ActivatedRoute,
     private cd: ChangeDetectorRef,
     private r2: Renderer2,
     private _appService: ApplicationService,
     private _quizService: QuizroundService,
     private _userScoreService: UserscoreService
-  ) {
-    this._quizService.items.pipe(map((d) => d)).subscribe((e: any[]) => {
-      e.map((g: any, index) => {
-        this.quiz_data.push({ options: [], question: '' });
-        for (let wq in g.options) {
-          this.quiz_data[index].options.push(g.options[wq]);
-        }
-        this.quiz_data[index].question = g.question;
-      });
+  ) {}
+
+  ngOnInit(): void {
+    this._quizService.items
+    .pipe( take(1))
+    .subscribe((e: any) => {
+      this.quiz_data = [];
     });
-  }
-
-  ngAfterViewInit() {
-    var quiz_round_info = document.querySelector('.quiz-round-info');
-    var quiz_round_num = document.querySelector('.quiz-round-num');
-
-    var quiz_option = document.querySelector('.quiz-option');
-
-    //this.shuffle(this.quiz_data);
-    //console.log('this.quizdata', this.quizdata[1], this.quiz_data[1]);
+    this.quiz_data = this._quizService.quizData;
+      // this._quizService.items
+      // .pipe( skipWhile(v => !v), skip(1))
+      // .subscribe((e: any) => {
+      //   if(e?.q != undefined) this.quiz_data.push(e?.q);
+      // });
+    //this._quizService.items.complete();
+    //console.log("this.quiz_data",this.quiz_data);
     this.options = [];
     this.question = '';
-    this._ar.params.subscribe((f: any) => {
-      ///let qqw = f.num - 1;
-      // this._quizService.round_num = qqw;
-      // console.log(
-      //   'this.round_num',
-      //   this._quizService.round_num,
-      //   this.quiz_data
-      // );
+    this.round_progress(true);
+    this.handleOptionChosen(document);
+    
+    this._quizService.gameDetailsBs
+    .pipe(skipWhile(v => !v))
+    .subscribe((e:any)=>{
+      console.log("retrying",e);
+      if(e != undefined && e.gameStatus == 'restart') {
+        console.log("retrying",e);
+        this.options = [];
+        this.question = '';
+        this.round_progress(true);
+        this.handleOptionChosen(document);
+      } else if(e != undefined && e.gameStatus == 'end') {
+        this._quizService.round_num = this.quiz_data.length;
+        this.options = [];
+        this.question = '';
+        this.round_progress(true);
+        this.handleOptionChosen(document);
+      }
+    })
 
-      this.fetch_qset(this._quizService.round_num - 1);
+    this.cd.detectChanges();
+  }
 
-      // this.question = 'eeeeeeeeee ---------- 33333333333333';
+  fetch_qset(index: number) {
+    setTimeout(() => {
+      let ix = index;
+      console.log('---------', index, ix, this.quiz_data, this.quiz_data[ix]);
+      if(this.quiz_data[ix] != undefined && this.quiz_data[ix].options != undefined && this.quiz_data[ix].question != undefined){
+        this.options = this.quiz_data[ix].options;
+        this.question = this.quiz_data[ix].question;
+        //this.quizSetData = this.quiz_data[ix].options;
+        this.quizSetData = { 
+          question : this.question,
+          options :  this.options
+        }
+      }
+    }, 5000);
+  }
 
-      // for (let az in this.quiz_data) {
-      //   //var az = this.quiz_data[this._quizService.round_num];
-      //   console.log('az', az);
-      //   // for (let wq in az) {
-      //   //   this.options = az[wq];
-      //   //   console.log('wq', wq);
-      //   // }
-      // }
+  // shuffle(array: any[]) {
+  //   let currentIndex = array.length,randomIndex;
 
-      // console.log('this.quiz_data - this.options', this.options);
+  //   // While there remain elements to shuffle...
+  //   while (currentIndex != 0) {
+  //     // Pick a remaining element...
+  //     randomIndex = Math.floor(Math.random() * currentIndex);
+  //     currentIndex--;
 
-      //this.options = this.quiz_data[this._quizService.round_num - 1].options;
-      this.round_progress();
-      // Round info animation
+  //     // And swap it with the current element.
+  //     [array[currentIndex], array[randomIndex]] = [
+  //       array[randomIndex],
+  //       array[currentIndex],
+  //     ];
+  //   }
 
+  //   return array;
+  // }
+
+  round_progress(first?:boolean) {
+    let rn: number;
+    if(first) {
+      rn = this._quizService.round_num;
+    } else {
+      rn = this._quizService.round_increment();
+    }
+    let game = {round:rn};
+    sessionStorage.setItem('game', JSON.stringify(game));
+
+    this.round_num = rn + 1;
+    this._quizService.update_round();
+
+    this.fetch_qset(rn);
+    //console.log("this.quiz_data",this.quiz_data);
+   
+    // Round info animation
+
+    var quiz_round_info = document.querySelector('.quiz-round-info');
+    var quiz_round_num = document.querySelector('.quiz-round-num');
+    var quiz_option = document.querySelector('.quiz-option');
       var fr = anime.timeline({
         duration: 1200,
       });
@@ -253,53 +185,6 @@ export class QuizroundComponent implements AfterViewInit {
         duration: 1200,
         delay: anime.stagger(1200),
       });
-    });
-    this.option_chosen(document);
-    console.log('qset', this.qset);
-    this.cd.detectChanges();
-  }
-
-  ngOnInit(): void {
-    //console.log('quiz_data', this.quiz_data[1], this.quizdata);
-    // setTimeout(() => {
-    //   console.log('---------', this.quiz_data[1]);
-    //   this.quiz_data.forEach((j) => {
-    //     console.log('jj', j);
-    //   });
-    // }, 9000);
-  }
-
-  fetch_qset(index: number) {
-    setTimeout(() => {
-      //console.log('---------', this.quiz_data[index]);
-      this.options = this.quiz_data[index].options;
-      this.question = this.quiz_data[index].question;
-    }, 5000);
-  }
-
-  shuffle(array: any[]) {
-    let currentIndex = array.length,
-      randomIndex;
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
-    }
-
-    return array;
-  }
-
-  round_progress() {
-    this.round_num = this._quizService.round_num;
-    this._quizService.update_round();
   }
 
   process_result(chosen_option_index: string) {
@@ -321,33 +206,32 @@ export class QuizroundComponent implements AfterViewInit {
     });
   }
 
-  option_chosen(val: any) {
-    var option_chosen = val.target ? val.target.parentElement : null;
-
-    var option_chosen_id = val.target ? val.target.parentElement.id : null;
-
-    if (option_chosen_id) {
-      this.process_result(option_chosen_id);
-      console.log(
-        'button subscribe',
-        val,
-        'all options',
-        this.options,
-        'this option',
-        option_chosen_id
-      );
+  handleOptionChosen(val: any) {
+    var handleOptionChosen = val.target ? val.target.parentElement : null;
+    var handleOptionChosen_id = val.target ? val.target.parentElement.id : null;
+    // console.log(
+    //   'button subscribe',
+    //   val,
+    //   'all options',
+    //   this.options,
+    //   'this option',
+    //   handleOptionChosen_id
+    // );
+    if (handleOptionChosen_id) {
+      this.process_result(handleOptionChosen_id);
+      
       // this.r2.setStyle(
-      //   option_chosen,
+      //   handleOptionChosen,
       //   '',
       //   'selected'
       // );
       // this.r2.setAttribute(
-      //   option_chosen,
+      //   handleOptionChosen,
       //   'class',
       //   'selected'
       // );
 
-      this.r2.addClass(option_chosen, 'selected');
+      this.r2.addClass(handleOptionChosen, 'selected');
       this._quizService.add_score(
         this._quizService.round_num,
         this.question,
@@ -359,7 +243,7 @@ export class QuizroundComponent implements AfterViewInit {
         this.clickedOnce = false;
         this.options = [];
         this.question = '';
-        if (this._quizService.round_num >= 5) {
+        if (this._quizService.round_num >= this.quiz_data.length - 1) {
           this.user_score_details = this._appService.fetch_user_score_details();
           console.log(
             'this.user_score_details.user.email',
@@ -388,11 +272,12 @@ export class QuizroundComponent implements AfterViewInit {
                 }
               });
             });
+          this.quiz_data = [];
           this.router.navigate([`./application/userscore`]);
         } else {
-          this.router.navigate([
-            `./application/quizround/${++this._quizService.round_num}`,
-          ]);
+          // this.router.navigate([
+          //   `./application/quizround/${++this._quizService.round_num}`,
+          // ]);
           this.round_progress();
         }
         console.log('this._quizService.round_num', this._quizService.round_num);

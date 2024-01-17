@@ -18,6 +18,7 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  { path: 'exp', loadChildren: () => import('./exp/exp.module').then(m => m.ExpModule) },
 ];
 
 @NgModule({

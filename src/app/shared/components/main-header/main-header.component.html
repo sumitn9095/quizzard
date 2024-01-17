@@ -1,19 +1,24 @@
 <nav class="navbar">
   <div class="container-fluid game_details_wrap">
     <a class="navbar-brand logo">Quizzard</a>
-    <div class="game_details">
-      <div *ngIf="user_details.user" class="btn-group mr-3">
-        <button type="button" class="btn emailid btn_secondary">{{ user_details.user.email }}</button>
-        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-          <button class="btn" ngbDropdownToggle></button>
-          <div class="dropdown-menu " ngbDropdownMenu>
-            <button ngbDropdownItem (click)="user_profile(user_profile_modal)">My Profile</button>
-            <button ngbDropdownItem (click)="sign_out()">Log Out</button>
+    <div>
+        <div class="game_details">
+          <div *ngIf="user_details.user" class="btn-group mr-3">
+            <button type="button" class="btn emailid btn_secondary">{{ user_details.user.email }}</button>
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+              <button title="kjd" class="btn" ngbDropdownToggle></button>
+              <div class="dropdown-menu " ngbDropdownMenu>
+                <button ngbDropdownItem (click)="user_profile(user_profile_modal)">My Profile</button>
+                <button ngbDropdownItem (click)="sign_out()">Log Out</button>
+              </div>
+            </div>
           </div>
+          <!-- <div *ngIf="user" class="emailid btn_secondary">{{ user.email }}</div>
+          <a *ngIf="user" class="btn" (click)="sign_out()">Log Out</a>-->
         </div>
-      </div>
-      <!-- <div *ngIf="user" class="emailid btn_secondary">{{ user.email }}</div>
-      <a *ngIf="user" class="btn" (click)="sign_out()">Log Out</a>-->
+        <a class="btn btn_secondary" (click)="newGame()">Start New Game</a>
+        <a class="btn btn_secondary" (click)="retry()">Restart</a>
+        <a class="btn" (click)="giveUp()">Give Up</a>
     </div>
   </div>
 </nav>
@@ -43,6 +48,7 @@
           <p>Email: <strong>{{user_details.user.email}}</strong></p>
           <p>Email Verified: <strong>{{user_details.user.emailVerified}}</strong></p>
         </div>
+       
       </div>
     </div>
   </div>

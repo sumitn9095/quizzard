@@ -28,19 +28,22 @@ export class AuthService {
       if (user) {
         if (user.emailVerified == true) {
           this.userData = user;
-          localStorage.setItem('user', JSON.stringify(this.userData));
-          let fff = localStorage.getItem('user');
-          console.log(`${user} --- IS signed-in`);
-
-          this.router.navigate(['../application/quizround/1']);
+          sessionStorage.setItem('user', JSON.stringify(this.userData));
+          let game = {'round':0};
+          sessionStorage.setItem('game', JSON.stringify(game));
+          let fff = sessionStorage.getItem('user');
+          //console.log(`${user} --- IS signed-in`);
+          this.router.navigate(['../application/intro']);
           return true;
         } else {
-          localStorage.removeItem('user');
+          sessionStorage.removeItem('user');
+          sessionStorage.removeItem('game');
           this.router.navigate(['../auth/']);
           return false;
         }
       } else {
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('game');
         this.router.navigate(['../auth/']);
         return false;
       }
@@ -121,9 +124,10 @@ export class AuthService {
   // Sign out
   signOut() {
     return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('user_score');
-      localStorage.removeItem('user_game_progress');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('game');
+      sessionStorage.removeItem('user_score');
+      sessionStorage.removeItem('user_game_progress');
       this.router.navigate(['../../../auth']);
     });
   }

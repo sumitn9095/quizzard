@@ -1,0 +1,20 @@
+<div>
+    <div>{{counter1}}</div>
+    <button #btn_cntr1 class="btn">Counter 1</button>
+</div>
+<hr>
+<div>
+    <div>
+        <div *ngFor="let g of counter2">
+            {{ g }}
+        </div>
+        <div>{{counter2Num}}</div>
+    </div>
+    <button #btn_cntr2 class="btn">Counter 2</button>
+</div>
+<div>
+    <div>
+        <div>{{obs | async}}</div>
+    </div>
+    <!-- <button #btn_cntr2 class="btn">Counter 2</button> -->
+</div>

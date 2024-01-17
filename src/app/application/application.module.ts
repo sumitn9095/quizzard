@@ -11,7 +11,6 @@ const routes: Routes = [
   },
   {
     path: 'quizround/:num',
-
     loadChildren: () =>
       import('./quizround/quizround.module').then((m) => m.QuizroundModule),
   },
@@ -27,6 +26,7 @@ const routes: Routes = [
         (m) => m.UserProfileModule
       ),
   },
+  { path: 'intro', loadChildren: () => import('./intro/intro.module').then(m => m.IntroModule) },
 ];
 
 @NgModule({

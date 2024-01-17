@@ -1,1 +1,17 @@
+<!-- 
+<div *ngFor="let qst of options">
+    <div>{{qst.name}}</div>
+</div> -->
 
+<div class="quiz-round">
+    <div class="question">
+        {{quizData.question}}
+    </div>
+    <div class="options" *ngIf="quizData">
+      <app-option #opts *ngFor="let qst of quizData.options" [id]="qst.id" class="quiz-option"
+        [ngClass]="qst.user ? qst.user : 'wrong' " [ngClass]="qst.answer ? qst.answer : '' "
+        (click)="optionChosen($event)">
+            {{ qst.name }}
+      </app-option>
+    </div>
+  </div>

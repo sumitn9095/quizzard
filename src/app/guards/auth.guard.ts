@@ -30,14 +30,14 @@ export class AuthGuard
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        let fff = localStorage.getItem('user');
+        sessionStorage.setItem('user', JSON.stringify(this.userData));
+        let fff = sessionStorage.getItem('user');
         console.log(`${user} --- IS signed-in`);
         //this._router.navigate(['../application']);
         return true;
       } else {
-        localStorage.setItem('user', 'NONE');
-        let fff = localStorage.getItem('user');
+        sessionStorage.setItem('user', 'NONE');
+        let fff = sessionStorage.getItem('user');
         console.log(`User IS NOT signed-in`);
         this._router.navigate(['../auth/']);
         return false;
@@ -58,18 +58,18 @@ export class AuthGuard
       if (user) {
         if (user.emailVerified == true) {
           this.userData = user;
-          localStorage.setItem('user', JSON.stringify(this.userData));
-          let fff = localStorage.getItem('user');
+          sessionStorage.setItem('user', JSON.stringify(this.userData));
+          let fff = sessionStorage.getItem('user');
           console.log(`${user} --- IS signed-in`);
           this._router.navigate(['../application']);
           return true;
         } else {
-          localStorage.removeItem('user');
+          sessionStorage.removeItem('user');
           this._router.navigate(['../auth/']);
           return false;
         }
       } else {
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
         this._router.navigate(['../auth/']);
         return false;
       }

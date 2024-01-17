@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationService } from '../../../application/application.service';
+import { QuizroundService } from 'src/app/application/quizround/quizround.service';
 @Component({
   selector: 'app-main-header',
   templateUrl: './main-header.component.html',
@@ -20,7 +21,8 @@ export class MainHeaderComponent implements OnInit {
   constructor(
     private _router: Router,
     private _ngModal: NgbModal,
-    private _appService: ApplicationService
+    private _appService: ApplicationService,
+    private _quizService: QuizroundService,
   ) {
     this._router.events.subscribe((event: Event) => {
       var currentRoute = '';
@@ -42,8 +44,8 @@ export class MainHeaderComponent implements OnInit {
       // console.log('url_is_quiz', ss, url_is_quiz);
 
       if (url_is_quiz == true) {
-        this.user_details = this._appService.fetch_user_score_details();
-        console.log('this.user_details', this.user_details);
+        //this.user_details = this._appService.fetch_user_score_details();
+        //console.log('this.user_details', this.user_details);
       }
     });
   }
@@ -55,7 +57,7 @@ export class MainHeaderComponent implements OnInit {
     //   this.user_details = this._appService.fetch_user_score_details();
     // }, 600);
     // console.log('this.user_details', this.user_details);
-    // let user = localStorage.getItem('user');
+    // let user = sessionStorage.getItem('user');
     // if (user) {
     //   // this.user_is_logged_in = true;
     //   this.user = user != null ? JSON.parse(user) : '';
@@ -94,6 +96,17 @@ export class MainHeaderComponent implements OnInit {
 
   sign_out() {
     this._router.navigate([`../../../auth/signout`]);
+  }
+
+  retry() {
+    this._quizService.retry();
+  }
+  newGame() {
+    this._quizService.newGame();
+  }
+
+  giveUp() {
+    this._quizService.giveUp();
   }
   // user_profile() {
   //   // this.user_profile_viwed_in_game = true;
